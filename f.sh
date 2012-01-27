@@ -32,10 +32,19 @@ __f_files()
 function __f_init()
 {
   local file
-  for file in `__f_files`
-  do
-    source $file
-  done
+  if [[ -d "$F_PATH" ]]; then
+    for file in $F_PATH/*
+    do
+      source $file
+    done
+  fi
+
+  if [[ -d "$F_PATH.local" ]]; then
+    for file in "$F_PATH.local"/*
+    do
+      source $file
+    done
+  fi
 }
 
 __f_init
@@ -67,14 +76,28 @@ function f()
 
 function __f_list()
 {
-  local files=`__f_files`
-  if [[ -n "$files" ]]; then
-    for file in `__f_files` ; do
+  local files=( )
+  local file
+
+  if [[ -d "$F_PATH" ]]; then
+    for file in `ls -1 "$F_PATH"` ; do
+      files+=( "$F_PATH/$file" )
+    done
+  fi
+
+  if [[ -d "$F_PATH.local" ]]; then
+    for file in `ls -1 "$F_PATH.local"` ; do
+      files+=( "$F_PATH.local/$file" )
+    done
+  fi
+
+  if [[ "${#files}" -eq 0 ]]; then
+    echo "You have not set any functions."
+  else
+    for file in "${files[@]}" ; do
       file=$(basename $file | sed 's/\.sh$//')
       echo "$file"
     done
-  else
-    echo "You have not set any functions."
   fi
 }
 
