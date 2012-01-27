@@ -11,23 +11,6 @@ if [[ ! -d "$F_PATH" ]]; then
   mkdir -p "$F_PATH"
 fi
 
-__f_files()
-{
-  local files=( )
-  if [[ -d "$F_PATH" ]]; then
-    for file in `ls -1 "$F_PATH"` ; do
-      files+=( "$F_PATH/$file" )
-    done
-  fi
-  
-  if [[ -d "$F_PATH.local" ]]; then
-    for file in `ls -1 "$F_PATH.local"` ; do
-      files+=( "$F_PATH.local/$file" )
-    done
-  fi
-  echo ${files[@]}
-}
-
 
 function __f_init()
 {
