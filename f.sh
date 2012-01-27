@@ -29,7 +29,7 @@ __f_files()
 }
 
 
-__f_init()
+function __f_init()
 {
   local file
   for file in `__f_files`
@@ -40,7 +40,7 @@ __f_init()
 
 __f_init
 
-f()
+function f()
 {
   if [[ ! -t 1 ]]; then
     echo "$F_PATH"
@@ -65,7 +65,7 @@ f()
   fi
 }
 
-__f_list()
+function __f_list()
 {
   local files=`__f_files`
   if [[ -n "$files" ]]; then
@@ -78,7 +78,7 @@ __f_list()
   fi
 }
 
-__f_edit()
+function __f_edit()
 {
   local f_loc=`__f_find_mark "$1"`
   if [[ -n "$f_loc" ]]; then
@@ -87,10 +87,10 @@ __f_edit()
   fi
 }
 
-__f_add()
+function __f_add()
 {
   local f_loc=`__f_find_mark "$1"`
-  
+
   if [[ $2 == "-" && $# -eq 2 ]]; then # remove only
     echo "Removing $1"
     rm -- $f_loc
@@ -112,7 +112,7 @@ __f_add()
         cmd="${@:2}"
       fi
     fi
-    
+
     echo "
 function $1 () {" > $f_loc
     echo "$cmd" | sed 's/^/  /' >> $f_loc
@@ -124,7 +124,7 @@ export -f $1
   fi
 }
 
-__f_cat()
+function __f_cat()
 {
   local f_loc=`__f_find_mark "$1"`
   if [[ -n "$f_loc" ]]; then
@@ -134,7 +134,7 @@ __f_cat()
   fi
 }
 
-__f_find_mark()
+function __f_find_mark()
 {
   local __f_mark=$(ls -1 $F_PATH.local/$1.sh 2>/dev/null)
   if [[ -z "$__f_mark" ]]; then
@@ -143,7 +143,7 @@ __f_find_mark()
   echo $__f_mark
 }
 
-__f_usage()
+function __f_usage()
 {
   cat <<HEREDOC
 f, a function tracking system
