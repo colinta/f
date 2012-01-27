@@ -25,7 +25,7 @@ For ease of entering functions using `!!`, ALL arguments, not just the third, ar
 ## Options:
       -h, --help        Show this help screen
       -l, --list        List functions
-      -e, --edit $fn    Use \$EDITOR to edit the function file name $fn
+      -e, --edit $fn    Use \$EDITOR to edit the function file named $fn
       
 
 ## Notes:
