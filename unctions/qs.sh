@@ -6,28 +6,32 @@ function qs () {
   fi
   string=$1
   pattern="*$(echo $string | sed "s/\(.\)/\1*/g")"
-  files=`find . -ipath "$pattern" -type f | ned ^./ ""`
+  files=`find . -path "$pattern" -type f | sed s=^\./=""=`
   if [[ -n "$files" ]]; then
     slen=${#string}
     for file in $files ; do
-      flen=${#file}
-      i=0
-      j=0
-      pos=0
-      substr=""
-      while [[ $i -lt $slen ]]; do
-        sc=${string:$i:1}
-        fc=${file:$j:1}
-        while [[ $fc != $sc ]]; do
-          echo -n $fc
-          j=$(($j + 1))
+      if [[ ! -t 1 ]]; then
+        echo $file
+      else
+        flen=${#file}
+        i=0
+        j=0
+        pos=0
+        substr=""
+        while [[ $i -lt $slen ]]; do
+          sc=${string:$i:1}
           fc=${file:$j:1}
+          while [[ $fc != $sc ]]; do
+            echo -n $fc
+            j=$(($j + 1))
+            fc=${file:$j:1}
+          done
+          echo -e -n "\033[1m$sc\033[0m"
+          i=$(($i + 1))
+          j=$(($j + 1))
         done
-        echo -e -n "\033[1m$sc\033[0m"
-        i=$(($i + 1))
-        j=$(($j + 1))
-      done
-      echo ${file:$j}
+        echo "${file:$j}"
+      fi
     done
   fi
 }
